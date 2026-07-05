@@ -3,16 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>deviverr - Portfolio</title>
+    <title>deviverr - Frontend & Web3 Portfolio</title>
     <meta
       name="description"
-      content="Portfolio for deviverr: frontend, Web3, Solana, and browser audio projects."
+      content="deviverr builds frontend, Web3, Solana, and browser audio products with TypeScript and JavaScript."
     />
     <meta name="theme-color" content="#fafafa" />
-    <meta property="og:title" content="deviverr - Portfolio" />
+    <meta property="og:title" content="deviverr - Frontend & Web3 Portfolio" />
     <meta
       property="og:description"
-      content="Frontend, Web3, Solana, and browser audio projects."
+      content="Frontend, Web3, Solana, and browser audio products by deviverr."
     />
     <meta property="og:type" content="website" />
     <link rel="stylesheet" href="styles.css" />
@@ -20,11 +20,13 @@
   <body>
     <main class="page">
       <header class="hero">
-        <p class="label">portfolio</p>
-        <h1>deviverr</h1>
+        <p class="label">deviverr / portfolio</p>
+        <h1>I build interfaces that make weird systems feel usable.</h1>
         <p class="lede">
-          Frontend and Web3 developer working with TypeScript, JavaScript,
-          Solana tooling, and browser-based interfaces.
+          Frontend and Web3 developer working across TypeScript, JavaScript,
+          Solana, browser audio, and product UI. I like the hard parts: wallet
+          flows, real-time feedback, edge states, and turning raw systems into
+          something people can actually use.
         </p>
         <nav class="links" aria-label="Profile links">
           <a href="https://github.com/deviverr" target="_blank" rel="noreferrer">github</a>
@@ -32,18 +34,26 @@
         </nav>
       </header>
 
-      <section aria-labelledby="about-title">
-        <p class="label">about</p>
-        <h2 id="about-title">I build small, direct product interfaces around real systems.</h2>
-        <p>
-          My public work is mostly TypeScript and JavaScript, with Solana,
-          Rust, Next.js, Supabase, browser audio, and Web Serial projects in the mix.
-        </p>
+      <section class="snapshot" aria-labelledby="snapshot-title">
+        <p class="label">builder snapshot</p>
+        <h2 id="snapshot-title">Fast frontend taste, Web3 systems brain.</h2>
+        <div class="snapshot-grid">
+          <p>
+            I ship clean web experiences around technical products: Solana apps,
+            SDK tooling, live monitors, browser audio, and hardware-adjacent
+            interfaces.
+          </p>
+          <p>
+            My best projects are not just pages. They connect to wallets, RPCs,
+            protocols, databases, audio streams, serial devices, and real product
+            flows.
+          </p>
+        </div>
       </section>
 
       <section aria-labelledby="work-title">
-        <p class="label">selected work</p>
-        <h2 id="work-title">Projects</h2>
+        <p class="label">selected builds</p>
+        <h2 id="work-title">Proof from public work</h2>
 
         <article class="repo">
           <div class="repo-heading">
@@ -51,9 +61,10 @@
             <span>TypeScript / Rust / Solana</span>
           </div>
           <p>
-            Secure, escrow-backed secondhand trading with strangers nearby.
-            The project includes a Next.js frontend, an Anchor escrow program,
-            and Supabase database/storage setup.
+            A mobile-first Solana marketplace with USDC escrow, local trading,
+            Next.js frontend work, Anchor program code, and Supabase-backed data
+            flows. This is the clearest signal that I can think in product,
+            frontend, and crypto mechanics at the same time.
           </p>
         </article>
 
@@ -67,9 +78,9 @@
             <span>TypeScript / Solana SDK</span>
           </div>
           <p>
-            SDK for improving RPC and transaction reliability in Solana dApps.
-            Built with @solana/web3.js v2.0 and includes build, typecheck,
-            test, and CLI scripts.
+            A Solana SDK focused on RPC and transaction reliability. It shows
+            comfort with client infrastructure, failover thinking, CLI tooling,
+            tests, and developer experience around Solana apps.
           </p>
         </article>
 
@@ -83,8 +94,9 @@
             <span>TypeScript / Raydium / Solana</span>
           </div>
           <p>
-            Real-time arbitrage monitoring tool for Raydium CPMM pools.
-            Uses Raydium SDK v2, @solana/web3.js, and a TypeScript CLI workflow.
+            A real-time monitor for Raydium CPMM pools using Raydium SDK and
+            @solana/web3.js. It is backend-ish, data-heavy, and useful proof for
+            building interfaces that need live market or protocol state.
           </p>
         </article>
 
@@ -98,41 +110,59 @@
             <span>JavaScript / Web Audio / Web Serial</span>
           </div>
           <p>
-            Browser app that captures system audio, detects dominant frequency,
-            and sends motor commands to a Betaflight flight controller over USB.
-            Built as vanilla web with no framework or build step.
+            A vanilla browser app that captures audio, detects dominant
+            frequency, and sends motor commands to a Betaflight flight controller
+            over USB. It shows I can build media-heavy, real-time browser UI
+            without hiding behind a framework.
           </p>
         </article>
       </section>
 
+      <section class="fit" aria-labelledby="fit-title">
+        <p class="label">why Echoes should care</p>
+        <h2 id="fit-title">Echoes needs someone who can make audio ownership feel simple.</h2>
+        <p>
+          Recording a story, publishing it, connecting a wallet, understanding
+          ownership, and listening back should feel smooth. That is exactly the
+          kind of surface I like building: technical underneath, obvious on top.
+        </p>
+        <ul class="stack-list">
+          <li>Recorder and playback UI with clear states and fast feedback.</li>
+          <li>Wallet, auth, and API flows that do not feel like crypto homework.</li>
+          <li>Responsive product screens that stay usable on mobile.</li>
+          <li>Audio and AI-tooling experiments grounded in real browser work.</li>
+        </ul>
+      </section>
+
       <section aria-labelledby="stack-title">
         <p class="label">stack</p>
-        <h2 id="stack-title">Tools and areas</h2>
+        <h2 id="stack-title">Where I am strongest</h2>
         <ul class="stack-list">
           <li>TypeScript, JavaScript, HTML, CSS</li>
-          <li>React, Next.js, frontend product UI</li>
+          <li>React, Next.js, product frontend UI</li>
           <li>Solana, Anchor, @solana/web3.js, Raydium SDK</li>
           <li>Supabase, API integration, CLI tooling</li>
           <li>Web Audio API, Web Serial API</li>
         </ul>
       </section>
 
-      <section aria-labelledby="contact-title">
+      <section class="contact" aria-labelledby="contact-title">
         <p class="label">contact</p>
-        <h2 id="contact-title">Links</h2>
+        <h2 id="contact-title">Bring me in where the product has to feel real.</h2>
         <p>
-          GitHub:
+          I am interested in frontend work where the UI is close to the core
+          product: recording, publishing, wallets, ownership, audio, and creator
+          tools.
+        </p>
+        <div class="contact-links">
           <a href="https://github.com/deviverr" target="_blank" rel="noreferrer">github.com/deviverr</a>
-        </p>
-        <p>
-          Telegram:
           <a href="https://t.me/deviverrr" target="_blank" rel="noreferrer">t.me/deviverrr</a>
-        </p>
+        </div>
       </section>
 
       <footer>
         <span>deviverr</span>
-        <span>Portfolio, July 2026</span>
+        <span>Frontend / Web3 / Audio UI</span>
       </footer>
     </main>
   </body>
