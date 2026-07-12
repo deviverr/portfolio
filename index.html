@@ -1,169 +1,498 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>deviverr - Frontend & Web3 Portfolio</title>
-    <meta
-      name="description"
-      content="deviverr builds frontend, Web3, Solana, and browser audio products with TypeScript and JavaScript."
-    />
-    <meta name="theme-color" content="#fafafa" />
-    <meta property="og:title" content="deviverr - Frontend & Web3 Portfolio" />
-    <meta
-      property="og:description"
-      content="Frontend, Web3, Solana, and browser audio products by deviverr."
-    />
-    <meta property="og:type" content="website" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <main class="page">
-      <header class="hero">
-        <p class="label">deviverr / portfolio</p>
-        <h1>I build interfaces that make weird systems feel usable.</h1>
-        <p class="lede">
-          Frontend and Web3 developer working across TypeScript, JavaScript,
-          Solana, browser audio, and product UI. I like the hard parts: wallet
-          flows, real-time feedback, edge states, and turning raw systems into
-          something people can actually use.
-        </p>
-        <nav class="links" aria-label="Profile links">
-          <a href="https://github.com/deviverr" target="_blank" rel="noreferrer">github</a>
-          <a href="https://t.me/deviverrr" target="_blank" rel="noreferrer">telegram</a>
-        </nav>
-      </header>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>deviverr — Frontend for audio × Solana products</title>
+  <meta name="description" content="Frontend & Web3 developer. Live Solana apps, real-time browser audio, wallet flows, and shipped consumer products. Next.js, TypeScript, React." />
+  <meta name="theme-color" content="#0b0d11" />
+  <meta property="og:title" content="deviverr — Frontend for audio × Solana products" />
+  <meta property="og:description" content="Live Solana apps, real-time browser audio, wallet flows, shipped products. Try the recorder demo on the page." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://deviverr.github.io/portfolio/" />
+  <meta property="og:image" content="https://deviverr.github.io/portfolio/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="deviverr — Frontend for audio × Solana products" />
+  <meta name="twitter:image" content="https://deviverr.github.io/portfolio/og.png" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0d11'/%3E%3Cg stroke-linecap='round' stroke-width='2.6'%3E%3Cpath d='M6 13v6' stroke='%239945FF'/%3E%3Cpath d='M11 9v14' stroke='%23a862ff'/%3E%3Cpath d='M16 5v22' stroke='%2360b8c9'/%3E%3Cpath d='M21 9v14' stroke='%2318dfa1'/%3E%3Cpath d='M26 13v6' stroke='%2314F195'/%3E%3C/g%3E%3C/svg%3E" />
+  <style>
+    :root{
+      --bg:#0b0d11; --bg2:#10131a; --card:#141823; --line:#232a38;
+      --text:#e8ecf4; --muted:#8b94a7; --dim:#5c6478;
+      --sol1:#9945FF; --sol2:#14F195; --warn:#ffb454;
+      --mono:"SFMono-Regular",ui-monospace,"Cascadia Mono",Consolas,monospace;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg); color:var(--text);
+      font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+    .wrap{max-width:1060px;margin:0 auto;padding:0 24px}
+    a{color:var(--text)}
+    ::selection{background:var(--sol1);color:#fff}
 
-      <section class="snapshot" aria-labelledby="snapshot-title">
-        <p class="label">builder snapshot</p>
-        <h2 id="snapshot-title">Fast frontend taste, Web3 systems brain.</h2>
-        <div class="snapshot-grid">
-          <p>
-            I ship clean web experiences around technical products: Solana apps,
-            SDK tooling, live monitors, browser audio, and hardware-adjacent
-            interfaces.
-          </p>
-          <p>
-            My best projects are not just pages. They connect to wallets, RPCs,
-            protocols, databases, audio streams, serial devices, and real product
-            flows.
-          </p>
+    .label{
+      font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--sol2);margin-bottom:14px;
+    }
+    h1,h2,h3{line-height:1.15;letter-spacing:-.02em}
+    h2{font-size:clamp(26px,4vw,38px);margin-bottom:14px}
+    section{padding:72px 0;border-top:1px solid var(--line)}
+    .muted{color:var(--muted)}
+
+    /* top bar */
+    .top{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:20px 0;font-family:var(--mono);font-size:13px;
+    }
+    .top a{color:var(--muted);text-decoration:none;margin-left:18px}
+    .top a:hover{color:var(--sol2)}
+    .brand{color:var(--text);font-weight:600}
+
+    /* hero */
+    .hero{padding:72px 0 60px}
+    .hero h1{font-size:clamp(34px,6vw,58px);max-width:17ch}
+    .hero .lede{max-width:58ch;margin:22px 0 30px;color:var(--muted);font-size:18px}
+    .accent{background:linear-gradient(90deg,var(--sol1),var(--sol2));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .cta-row{display:flex;flex-wrap:wrap;gap:12px}
+    .btn{
+      display:inline-block;padding:11px 20px;border-radius:10px;text-decoration:none;
+      font-family:var(--mono);font-size:14px;border:1px solid var(--line);
+      color:var(--text);background:var(--card);transition:.15s;
+    }
+    .btn:hover{border-color:var(--sol1);transform:translateY(-1px)}
+    .btn.primary{background:linear-gradient(90deg,var(--sol1),#6b2fd6);border-color:transparent;color:#fff}
+    .btn.primary:hover{filter:brightness(1.12)}
+
+    /* recorder demo */
+    .demo-box{
+      background:var(--bg2);border:1px solid var(--line);border-radius:16px;
+      padding:26px;margin-top:26px;
+    }
+    .demo-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:16px}
+    .demo-head h3{font-size:19px}
+    .demo-head span{font-family:var(--mono);font-size:12px;color:var(--dim)}
+    #wave{width:100%;height:110px;display:block;background:#0d1016;border:1px solid var(--line);border-radius:10px}
+    .demo-controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:16px}
+    .rec-btn{
+      font-family:var(--mono);font-size:14px;padding:10px 22px;border-radius:10px;border:none;cursor:pointer;
+      background:linear-gradient(90deg,var(--sol1),#6b2fd6);color:#fff;transition:.15s;
+    }
+    .rec-btn:hover{filter:brightness(1.12)}
+    .rec-btn.recording{background:#e5484d;animation:pulse 1.2s infinite}
+    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(229,72,77,.5)}50%{box-shadow:0 0 0 9px rgba(229,72,77,0)}}
+    .rec-btn[disabled]{opacity:.45;cursor:not-allowed}
+    #recStatus{font-family:var(--mono);font-size:13px;color:var(--muted)}
+    #player{flex:1;min-width:220px;height:36px;display:none}
+    .demo-note{margin-top:14px;font-size:13.5px;color:var(--dim)}
+    .demo-note a{color:var(--muted)}
+
+    /* fit table */
+    .fit-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:15px}
+    .fit-table th,.fit-table td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+    .fit-table th{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+    .fit-table td:first-child{color:var(--text);font-weight:600;width:38%}
+    .fit-table td{color:var(--muted)}
+    .fit-table a{color:var(--sol2);text-decoration:none}
+    .fit-table a:hover{text-decoration:underline}
+
+    /* project cards */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:28px}
+    .card{
+      background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;
+      display:flex;flex-direction:column;gap:12px;transition:.15s;
+    }
+    .card:hover{border-color:#3a4459;transform:translateY(-2px)}
+    .card.flagship{border-color:#3d2d63}
+    .card-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .card h3{font-size:18px}
+    .card h3 a{text-decoration:none}
+    .card h3 a:hover{color:var(--sol2)}
+    .tag{
+      font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:20px;white-space:nowrap;
+      border:1px solid var(--line);color:var(--muted);
+    }
+    .tag.live{border-color:var(--sol2);color:var(--sol2)}
+    .card p{font-size:14.5px;color:var(--muted);flex:1}
+    .card .stack{font-family:var(--mono);font-size:12px;color:var(--dim)}
+    .card-links{display:flex;gap:14px;font-family:var(--mono);font-size:13px}
+    .card-links a{color:var(--sol2);text-decoration:none}
+    .card-links a:hover{text-decoration:underline}
+    .card-links a.gh{color:var(--muted)}
+
+    /* shipped strip */
+    .strip{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+    .chip{
+      font-family:var(--mono);font-size:13px;text-decoration:none;color:var(--muted);
+      border:1px solid var(--line);border-radius:10px;padding:9px 15px;background:var(--card);transition:.15s;
+    }
+    .chip:hover{color:var(--sol2);border-color:var(--sol2)}
+    .chip b{color:var(--text);font-weight:600}
+
+    /* resol embed */
+    .embed-flex{display:flex;flex-wrap:wrap;gap:36px;align-items:center;margin-top:28px}
+    .phone{
+      width:320px;height:600px;flex:none;border-radius:34px;border:1px solid #2c3547;
+      background:#000;padding:12px;box-shadow:0 24px 70px rgba(0,0,0,.5),0 0 0 1px #000;
+    }
+    .phone iframe{width:100%;height:100%;border:0;border-radius:24px;background:#0d1016}
+    .embed-copy{flex:1;min-width:280px}
+    .embed-copy ul{margin:16px 0 22px 18px;color:var(--muted)}
+    .embed-copy li{margin-bottom:9px}
+
+    footer{padding:44px 0 60px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;font-family:var(--mono);font-size:13px;color:var(--dim)}
+    footer a{color:var(--muted);text-decoration:none;margin-left:16px}
+    footer a:hover{color:var(--sol2)}
+
+    /* scroll reveal */
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+    .reveal.in{opacity:1;transform:none}
+    @media (prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      .reveal{opacity:1;transform:none;transition:none}
+      .rec-btn.recording{animation:none}
+      .card:hover,.btn:hover{transform:none}
+    }
+
+    @media (max-width:640px){
+      section{padding:52px 0}
+      .phone{width:100%;max-width:320px;margin:0 auto}
+      .fit-table td:first-child{width:auto}
+      .fit-table td,.fit-table th{padding:11px 8px;font-size:14px}
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <span class="brand">deviverr</span>
+    <nav aria-label="Site">
+      <a href="#demo">recorder demo</a>
+      <a href="#fit">fit</a>
+      <a href="#work">work</a>
+      <a href="https://github.com/deviverr" target="_blank" rel="noreferrer">github</a>
+      <a href="https://t.me/deviverrr" target="_blank" rel="noreferrer">telegram</a>
+    </nav>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <p class="label">frontend · web3 · browser audio</p>
+    <h1>I build the surface where <span class="accent">audio meets ownership</span>.</h1>
+    <p class="lede">
+      Frontend and Web3 developer shipping live products with Next.js, TypeScript, and React —
+      Solana wallet flows, real-time browser audio, and consumer UI that makes crypto
+      feel like a normal app. Everything below is public, and most of it runs in your browser right now.
+    </p>
+    <div class="cta-row">
+      <a class="btn primary" href="#demo">▶ Try the recorder built into this page</a>
+      <a class="btn" href="https://deviverr.github.io/ReSol/" target="_blank" rel="noreferrer">Live Solana app: ReSol</a>
+      <a class="btn" href="https://deviverr.github.io/FPV-Motor-Live-Speaker/" target="_blank" rel="noreferrer">Live audio app: FPV Speaker</a>
+    </div>
+
+    <!-- RECORDER DEMO -->
+    <div class="demo-box" id="demo">
+      <div class="demo-head">
+        <h3>Record → see it → listen back.</h3>
+        <span>vanilla JS · Web Audio + MediaRecorder · zero dependencies · view source</span>
+      </div>
+      <canvas id="wave" width="1000" height="110" aria-label="Live audio waveform"></canvas>
+      <div class="demo-controls">
+        <button class="rec-btn" id="recBtn" type="button">● Record</button>
+        <span id="recStatus">Mic stays local — nothing is uploaded.</span>
+        <audio id="player" controls></audio>
+      </div>
+      <p class="demo-note">
+        This is Echoes' core loop — record a voice, watch it become an object, play it back —
+        built into a static page in ~100 lines of plain JavaScript. Clear states, graceful
+        permission handling, mobile-friendly. Imagine it with
+        <a href="https://github.com/deviverr/solana-resilience-sdk" target="_blank" rel="noreferrer">my Solana reliability layer</a>
+        underneath and Arweave behind it.
+      </p>
+    </div>
+  </header>
+
+  <!-- FIT -->
+  <section id="fit" aria-labelledby="fit-title">
+    <p class="label">requirement → proof</p>
+    <h2 id="fit-title">Every line of the Echoes listing, answered with public work.</h2>
+    <table class="fit-table">
+      <thead><tr><th>You need</th><th>I've shipped</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Strong Next.js, TypeScript, React</td>
+          <td><a href="https://deviverr.github.io/ReSol/" target="_blank" rel="noreferrer">ReSol</a> (Next.js 16, App Router) and
+              <a href="https://github.com/deviverr/NMT-Arena" target="_blank" rel="noreferrer">NMT Arena</a> (Next.js 14 + Tailwind monorepo with a Chrome MV3 extension). TypeScript everywhere.</td>
+        </tr>
+        <tr>
+          <td>Consumer-facing Web3 apps</td>
+          <td><a href="https://deviverr.github.io/ReSol/" target="_blank" rel="noreferrer">ReSol</a>: USDC on-chain escrow, QR handoff, listings, ratings — crypto mechanics wrapped in a marketplace anyone can use.</td>
+        </tr>
+        <tr>
+          <td>Solana wallet adapters, Privy or similar auth</td>
+          <td>Wallet Standard adapter (Phantom / Solflare / Backpack) in
+              <a href="https://github.com/deviverr/solana-resilience-sdk" target="_blank" rel="noreferrer">solana-resilience-sdk</a>;
+              wallet-adapter connect flow in ReSol; social OAuth (Google / Discord via Supabase Auth) in NMT Arena — the same embedded-login model Privy uses.</td>
+        </tr>
+        <tr>
+          <td>Eye for UI detail & smooth UX</td>
+          <td>Try them: <a href="https://deviverr.github.io/FPV-Motor-Live-Speaker/" target="_blank" rel="noreferrer">FPV Speaker</a>'s
+              live spectrum + layered safety UX, <a href="https://deviverr.github.io/ASCII-Wallpaper/" target="_blank" rel="noreferrer">ASCII Studio</a>'s
+              editor with undo/zoom/clipboard, and the recorder on this page.</td>
+        </tr>
+        <tr>
+          <td>AI tools & audio processing</td>
+          <td>Real-time FFT frequency detection driving hardware over Web Serial
+              (<a href="https://deviverr.github.io/FPV-Motor-Live-Speaker/" target="_blank" rel="noreferrer">FPV Speaker</a>);
+              AI tooling I built for myself: <a href="https://github.com/deviverr/cwat" target="_blank" rel="noreferrer">cwat</a> (Go AI console client)
+              and <a href="https://github.com/deviverr/amegi" target="_blank" rel="noreferrer">amegi</a> (AI game assistant).
+              Comfortable wiring ElevenLabs-style APIs into a recording pipeline.</td>
+        </tr>
+        <tr>
+          <td>Shipped products, not candidates</td>
+          <td>Five things you can open right now: ReSol, FPV Speaker, ASCII Studio,
+              <a href="https://clawlie.xyz" target="_blank" rel="noreferrer">clawlie.xyz</a> (multiplayer game on its own domain),
+              and this page's recorder. Plus desktop apps with real users below.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- FLAGSHIP WORK -->
+  <section id="work" aria-labelledby="work-title">
+    <p class="label">flagship builds</p>
+    <h2 id="work-title">The four that matter for this role</h2>
+    <div class="grid">
+
+      <article class="card flagship">
+        <div class="card-top">
+          <h3><a href="https://deviverr.github.io/ReSol/" target="_blank" rel="noreferrer">ReSol</a></h3>
+          <span class="tag live">● live</span>
         </div>
-      </section>
-
-      <section aria-labelledby="work-title">
-        <p class="label">selected builds</p>
-        <h2 id="work-title">Proof from public work</h2>
-
-        <article class="repo">
-          <div class="repo-heading">
-            <h3><a href="https://github.com/deviverr/ReSol" target="_blank" rel="noreferrer">ReSol</a></h3>
-            <span>TypeScript / Rust / Solana</span>
-          </div>
-          <p>
-            A mobile-first Solana marketplace with USDC escrow, local trading,
-            Next.js frontend work, Anchor program code, and Supabase-backed data
-            flows. This is the clearest signal that I can think in product,
-            frontend, and crypto mechanics at the same time.
-          </p>
-        </article>
-
-        <article class="repo">
-          <div class="repo-heading">
-            <h3>
-              <a href="https://github.com/deviverr/solana-resilience-sdk" target="_blank" rel="noreferrer">
-                solana-resilience-sdk
-              </a>
-            </h3>
-            <span>TypeScript / Solana SDK</span>
-          </div>
-          <p>
-            A Solana SDK focused on RPC and transaction reliability. It shows
-            comfort with client infrastructure, failover thinking, CLI tooling,
-            tests, and developer experience around Solana apps.
-          </p>
-        </article>
-
-        <article class="repo">
-          <div class="repo-heading">
-            <h3>
-              <a href="https://github.com/deviverr/raydium-cpmm-arb-monitor" target="_blank" rel="noreferrer">
-                raydium-cpmm-arb-monitor
-              </a>
-            </h3>
-            <span>TypeScript / Raydium / Solana</span>
-          </div>
-          <p>
-            A real-time monitor for Raydium CPMM pools using Raydium SDK and
-            @solana/web3.js. It is backend-ish, data-heavy, and useful proof for
-            building interfaces that need live market or protocol state.
-          </p>
-        </article>
-
-        <article class="repo">
-          <div class="repo-heading">
-            <h3>
-              <a href="https://github.com/deviverr/FPV-Motor-Live-Speaker" target="_blank" rel="noreferrer">
-                FPV-Motor-Live-Speaker
-              </a>
-            </h3>
-            <span>JavaScript / Web Audio / Web Serial</span>
-          </div>
-          <p>
-            A vanilla browser app that captures audio, detects dominant
-            frequency, and sends motor commands to a Betaflight flight controller
-            over USB. It shows I can build media-heavy, real-time browser UI
-            without hiding behind a framework.
-          </p>
-        </article>
-      </section>
-
-      <section class="fit" aria-labelledby="fit-title">
-        <p class="label">why Echoes should care</p>
-        <h2 id="fit-title">Echoes needs someone who can make audio ownership feel simple.</h2>
-        <p>
-          Recording a story, publishing it, connecting a wallet, understanding
-          ownership, and listening back should feel smooth. That is exactly the
-          kind of surface I like building: technical underneath, obvious on top.
-        </p>
-        <ul class="stack-list">
-          <li>Recorder and playback UI with clear states and fast feedback.</li>
-          <li>Wallet, auth, and API flows that do not feel like crypto homework.</li>
-          <li>Responsive product screens that stay usable on mobile.</li>
-          <li>Audio and AI-tooling experiments grounded in real browser work.</li>
-        </ul>
-      </section>
-
-      <section aria-labelledby="stack-title">
-        <p class="label">stack</p>
-        <h2 id="stack-title">Where I am strongest</h2>
-        <ul class="stack-list">
-          <li>TypeScript, JavaScript, HTML, CSS</li>
-          <li>React, Next.js, product frontend UI</li>
-          <li>Solana, Anchor, @solana/web3.js, Raydium SDK</li>
-          <li>Supabase, API integration, CLI tooling</li>
-          <li>Web Audio API, Web Serial API</li>
-        </ul>
-      </section>
-
-      <section class="contact" aria-labelledby="contact-title">
-        <p class="label">contact</p>
-        <h2 id="contact-title">Bring me in where the product has to feel real.</h2>
-        <p>
-          I am interested in frontend work where the UI is close to the core
-          product: recording, publishing, wallets, ownership, audio, and creator
-          tools.
-        </p>
-        <div class="contact-links">
-          <a href="https://github.com/deviverr" target="_blank" rel="noreferrer">github.com/deviverr</a>
-          <a href="https://t.me/deviverrr" target="_blank" rel="noreferrer">t.me/deviverrr</a>
+        <p>Mobile-first Solana marketplace: reserve items with USDC locked in an Anchor escrow
+           program, meet up, release funds with a QR handoff. Wallet connect, listings, photo
+           upload, activity, ratings.</p>
+        <span class="stack">Next.js 16 · TypeScript · wallet adapter · Anchor/Rust · Supabase</span>
+        <div class="card-links">
+          <a href="https://deviverr.github.io/ReSol/" target="_blank" rel="noreferrer">live demo →</a>
+          <a class="gh" href="https://github.com/deviverr/ReSol" target="_blank" rel="noreferrer">source</a>
         </div>
-      </section>
+      </article>
 
-      <footer>
-        <span>deviverr</span>
-        <span>Frontend / Web3 / Audio UI</span>
-      </footer>
-    </main>
-  </body>
+      <article class="card flagship">
+        <div class="card-top">
+          <h3><a href="https://github.com/deviverr/solana-resilience-sdk" target="_blank" rel="noreferrer">solana-resilience-sdk</a></h3>
+          <span class="tag">SDK</span>
+        </div>
+        <p>A reliability layer for Solana dApps on web3.js v2: health-aware RPC load balancing,
+           failover, circuit breakers, Jito MEV routing, priority-fee estimation, WebSocket
+           failover, wallet adapter, live diagnostics CLI. 178 tests, 100% line & branch coverage.</p>
+        <span class="stack">TypeScript · web3.js v2 · Wallet Standard · OTel/Prometheus · CI</span>
+        <div class="card-links">
+          <a class="gh" href="https://github.com/deviverr/solana-resilience-sdk" target="_blank" rel="noreferrer">source →</a>
+        </div>
+      </article>
+
+      <article class="card flagship">
+        <div class="card-top">
+          <h3><a href="https://deviverr.github.io/FPV-Motor-Live-Speaker/" target="_blank" rel="noreferrer">FPV Motor Live Speaker</a></h3>
+          <span class="tag live">● live</span>
+        </div>
+        <p>Captures system audio in the browser, runs real-time FFT frequency detection with a
+           live spectrum visualizer, and drives drone motors over USB so they sing the melody.
+           Seven layers of safety UX, emergency stop, protocol options — all vanilla JS.</p>
+        <span class="stack">Web Audio API · Web Serial · Canvas · MSP protocol · no frameworks</span>
+        <div class="card-links">
+          <a href="https://deviverr.github.io/FPV-Motor-Live-Speaker/" target="_blank" rel="noreferrer">live app →</a>
+          <a class="gh" href="https://github.com/deviverr/FPV-Motor-Live-Speaker" target="_blank" rel="noreferrer">source</a>
+        </div>
+      </article>
+
+      <article class="card flagship">
+        <div class="card-top">
+          <h3><a href="https://github.com/deviverr/NMT-Arena" target="_blank" rel="noreferrer">NMT Arena</a></h3>
+          <span class="tag">full-stack</span>
+        </div>
+        <p>Gamified exam prep for Ukrainian students: Next.js site with XP, streaks, badges, and
+           leaderboards, paired with a Chrome extension that detects real test results and submits
+           validated sessions. Social login, RLS, dynamic OG share cards.</p>
+        <span class="stack">Next.js 14 · Tailwind · Supabase OAuth · Chrome MV3 · Turborepo · Zod</span>
+        <div class="card-links">
+          <a class="gh" href="https://github.com/deviverr/NMT-Arena" target="_blank" rel="noreferrer">source →</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- RESOL EMBED -->
+  <section aria-labelledby="embed-title">
+    <p class="label">no clicks needed</p>
+    <h2 id="embed-title">ReSol, running live inside this page.</h2>
+    <div class="embed-flex">
+      <div class="phone">
+        <iframe src="https://deviverr.github.io/ReSol/" title="ReSol live demo" loading="lazy"></iframe>
+      </div>
+      <div class="embed-copy">
+        <p class="muted">This isn't a screenshot — it's the deployed devnet app in an iframe.
+           The same product loop Echoes needs:</p>
+        <ul>
+          <li><b>Connect</b> — Solana wallet adapter, graceful empty/error states.</li>
+          <li><b>Create</b> — listing flow with photo upload to Supabase storage.</li>
+          <li><b>Own & settle</b> — USDC locked in an on-chain Anchor escrow, released by QR handoff.</li>
+          <li><b>Mobile-first</b> — designed at 375px, scales up.</li>
+        </ul>
+        <a class="btn" href="https://deviverr.github.io/ReSol/" target="_blank" rel="noreferrer">Open full app ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHIPPED STRIP -->
+  <section aria-labelledby="shipped-title">
+    <p class="label">builders, not candidates</p>
+    <h2 id="shipped-title">Other things I've actually shipped</h2>
+    <p class="muted" style="max-width:62ch">Range matters: games, creative tools, desktop apps, hardware
+       interfaces. I finish things and put them in front of people.</p>
+    <div class="strip">
+      <a class="chip" href="https://clawlie.xyz" target="_blank" rel="noreferrer"><b>clawlie.xyz</b> — live multiplayer pixel farming game, custom canvas engine + PeerJS</a>
+      <a class="chip" href="https://deviverr.github.io/ASCII-Wallpaper/" target="_blank" rel="noreferrer"><b>ASCII Studio</b> — live browser paint editor & wallpaper generator</a>
+      <a class="chip" href="https://deviver.art/nekuloader/" target="_blank" rel="noreferrer"><b>NekuLoader</b> — desktop music downloader with a real user base</a>
+      <a class="chip" href="https://github.com/deviverr/raydium-cpmm-arb-monitor" target="_blank" rel="noreferrer"><b>raydium-cpmm-arb-monitor</b> — real-time Raydium pool monitor</a>
+      <a class="chip" href="https://deviver.itch.io/casino-calculator-game" target="_blank" rel="noreferrer"><b>Casino Calculator</b> — game published on itch.io</a>
+      <a class="chip" href="https://github.com/deviverr/DJI-RC-Emulator" target="_blank" rel="noreferrer"><b>DJI RC Emulator</b> — use a DJI controller on PC (3★)</a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section aria-labelledby="contact-title">
+    <p class="label">contact</p>
+    <h2 id="contact-title">Ready to own the Echoes frontend.</h2>
+    <p class="muted" style="max-width:60ch">Remote, async, fast iterations, AI-accelerated workflow with
+       manual review on everything that ships. The recording, publishing, and listening surface is
+       exactly the work I want to do.</p>
+    <div class="cta-row" style="margin-top:24px">
+      <a class="btn primary" href="https://t.me/deviverrr" target="_blank" rel="noreferrer">Message me on Telegram</a>
+      <a class="btn" href="https://github.com/deviverr" target="_blank" rel="noreferrer">github.com/deviverr</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>© deviverr — frontend / web3 / audio UI</span>
+    <span>
+      <a href="https://github.com/deviverr/portfolio" target="_blank" rel="noreferrer">source of this page</a>
+      <a href="https://t.me/deviverrr" target="_blank" rel="noreferrer">telegram</a>
+    </span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  // scroll reveal
+  var els=document.querySelectorAll('section, .card, .demo-box');
+  els.forEach(function(el){el.classList.add('reveal');});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+      });
+    },{threshold:.08});
+    els.forEach(function(el){io.observe(el);});
+  }else{
+    els.forEach(function(el){el.classList.add('in');});
+  }
+})();
+(function(){
+  var btn=document.getElementById('recBtn'),
+      status=document.getElementById('recStatus'),
+      player=document.getElementById('player'),
+      canvas=document.getElementById('wave'),
+      ctx=canvas.getContext('2d');
+  var audioCtx=null,analyser=null,recorder=null,stream=null,raf=null,chunks=[],t0=0,timerId=null;
+
+  function fit(){var r=canvas.getBoundingClientRect();canvas.width=r.width*devicePixelRatio;canvas.height=110*devicePixelRatio;}
+  fit();addEventListener('resize',fit);
+
+  function idleWave(){
+    var w=canvas.width,h=canvas.height,t=Date.now()/900;
+    ctx.clearRect(0,0,w,h);ctx.beginPath();
+    for(var x=0;x<w;x++){
+      var y=h/2+Math.sin(x/90+t)*h*.06*Math.sin(t/2+x/300);
+      x?ctx.lineTo(x,y):ctx.moveTo(x,y);
+    }
+    ctx.strokeStyle='rgba(139,148,167,.35)';ctx.lineWidth=2;ctx.stroke();
+    if(!recorder)raf=requestAnimationFrame(idleWave);
+  }
+  idleWave();
+
+  function liveWave(){
+    var data=new Uint8Array(analyser.fftSize);
+    analyser.getByteTimeDomainData(data);
+    var w=canvas.width,h=canvas.height;
+    ctx.clearRect(0,0,w,h);
+    var grad=ctx.createLinearGradient(0,0,w,0);
+    grad.addColorStop(0,'#9945FF');grad.addColorStop(1,'#14F195');
+    ctx.beginPath();
+    for(var i=0;i<data.length;i++){
+      var x=i/data.length*w, y=data[i]/255*h;
+      i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+    }
+    ctx.strokeStyle=grad;ctx.lineWidth=2.5;ctx.stroke();
+    raf=requestAnimationFrame(liveWave);
+  }
+
+  function setStatus(msg){status.textContent=msg;}
+
+  function stopAll(){
+    if(raf)cancelAnimationFrame(raf);
+    if(timerId)clearInterval(timerId);
+    if(stream)stream.getTracks().forEach(function(t){t.stop();});
+    if(audioCtx){audioCtx.close();audioCtx=null;}
+    recorder=null;stream=null;
+    btn.classList.remove('recording');
+    btn.textContent='● Record again';
+    idleWave();
+  }
+
+  btn.addEventListener('click',function(){
+    if(recorder&&recorder.state==='recording'){recorder.stop();return;}
+    if(!navigator.mediaDevices||!window.MediaRecorder){
+      setStatus('This browser does not support recording — try Chrome, Edge, or Safari 14+.');return;
+    }
+    setStatus('Requesting microphone…');btn.disabled=true;
+    navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
+      stream=s;btn.disabled=false;
+      audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+      analyser=audioCtx.createAnalyser();analyser.fftSize=2048;
+      audioCtx.createMediaStreamSource(s).connect(analyser);
+      chunks=[];
+      recorder=new MediaRecorder(s);
+      recorder.ondataavailable=function(e){if(e.data.size)chunks.push(e.data);};
+      recorder.onstop=function(){
+        var blob=new Blob(chunks,{type:recorder.mimeType||'audio/webm'});
+        player.src=URL.createObjectURL(blob);
+        player.style.display='block';
+        setStatus('Yours. '+(blob.size/1024).toFixed(0)+' KB, on your device only — this is the moment Echoes would tokenize.');
+        stopAll();
+      };
+      recorder.start();
+      t0=Date.now();
+      timerId=setInterval(function(){
+        setStatus('Recording '+((Date.now()-t0)/1000).toFixed(1)+'s — click again to stop.');
+      },100);
+      btn.textContent='■ Stop';
+      btn.classList.add('recording');
+      cancelAnimationFrame(raf);liveWave();
+    }).catch(function(err){
+      btn.disabled=false;
+      setStatus(err&&err.name==='NotAllowedError'
+        ?'Mic permission denied — that\'s fine. The waveform above still shows the idle state design.'
+        :'Could not access a microphone on this device.');
+    });
+  });
+})();
+</script>
+</body>
 </html>
