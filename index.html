@@ -247,9 +247,10 @@
         </tr>
         <tr>
           <td>Solana wallet adapters, Privy or similar auth</td>
-          <td>Wallet Standard adapter (Phantom / Solflare / Backpack) in
-              <a href="https://github.com/deviverr/solana-resilience-sdk" target="_blank" rel="noreferrer">solana-resilience-sdk</a>;
-              wallet-adapter connect flow in ReSol; social OAuth (Google / Discord via Supabase Auth) in NMT Arena — the same embedded-login model Privy uses.</td>
+          <td>I've built an actual Solana wallet: <a href="https://github.com/SolWear/solwear" target="_blank" rel="noreferrer">SolWear</a>,
+              a hardware wallet with offline Ed25519 signing over NFC. Plus the Wallet Standard adapter (Phantom / Solflare / Backpack) in
+              <a href="https://github.com/deviverr/solana-resilience-sdk" target="_blank" rel="noreferrer">solana-resilience-sdk</a>,
+              the connect flow in ReSol, and social OAuth (Google / Discord via Supabase Auth) in NMT Arena — the same embedded-login model Privy uses.</td>
         </tr>
         <tr>
           <td>Eye for UI detail & smooth UX</td>
@@ -278,8 +279,23 @@
   <!-- FLAGSHIP WORK -->
   <section id="work" aria-labelledby="work-title">
     <p class="label">flagship builds</p>
-    <h2 id="work-title">The four that matter for this role</h2>
+    <h2 id="work-title">The five that matter for this role</h2>
     <div class="grid">
+
+      <article class="card flagship">
+        <div class="card-top">
+          <h3><a href="https://github.com/SolWear/solwear" target="_blank" rel="noreferrer">SolWear</a></h3>
+          <span class="tag">hardware wallet</span>
+        </div>
+        <p>A wearable Solana hardware wallet: private key never leaves the watch, transactions are
+           signed offline with Ed25519 and relayed over NFC by an Android companion. I built the whole
+           stack — ESP32 firmware, Kotlin/Compose app, signing protocol, and the Next.js product site.</p>
+        <span class="stack">ESP32/C · Kotlin · NFC protocol · Solana RPC · Next.js + Tailwind site</span>
+        <div class="card-links">
+          <a href="https://solwear.tech" target="_blank" rel="noreferrer">solwear.tech →</a>
+          <a class="gh" href="https://github.com/SolWear/solwear" target="_blank" rel="noreferrer">source</a>
+        </div>
+      </article>
 
       <article class="card flagship">
         <div class="card-top">
