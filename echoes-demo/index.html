@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Echoes concept — record → mint → listen | deviverr</title>
+  <meta name="description" content="A working front-end concept of the Echoes product loop: record a story, tokenize it, listen back. Built by deviverr as part of an application." />
+  <meta name="theme-color" content="#0b0d11" />
+  <meta property="og:title" content="Echoes concept — record → mint → listen" />
+  <meta property="og:description" content="The Echoes product loop, working in your browser. Unofficial concept by deviverr." />
+  <meta property="og:image" content="https://deviverr.github.io/portfolio/og.png" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0d11'/%3E%3Cg stroke-linecap='round' stroke-width='2.6'%3E%3Cpath d='M6 13v6' stroke='%239945FF'/%3E%3Cpath d='M11 9v14' stroke='%23a862ff'/%3E%3Cpath d='M16 5v22' stroke='%2360b8c9'/%3E%3Cpath d='M21 9v14' stroke='%2318dfa1'/%3E%3Cpath d='M26 13v6' stroke='%2314F195'/%3E%3C/g%3E%3C/svg%3E" />
+  <style>
+    :root{
+      --bg:#0b0d11; --bg2:#10131a; --card:#141823; --line:#232a38;
+      --text:#e8ecf4; --muted:#8b94a7; --dim:#5c6478;
+      --sol1:#9945FF; --sol2:#14F195; --gold:#ffd166;
+      --mono:"SFMono-Regular",ui-monospace,"Cascadia Mono",Consolas,monospace;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);
+      font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
+      -webkit-font-smoothing:antialiased;}
+    .wrap{max-width:760px;margin:0 auto;padding:0 20px 80px}
+    a{color:var(--sol2)}
+    .label{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sol2)}
+    .mono{font-family:var(--mono)}
+
+    .top{display:flex;justify-content:space-between;align-items:center;padding:18px 0;font-family:var(--mono);font-size:13px}
+    .top a{color:var(--muted);text-decoration:none}
+    .top a:hover{color:var(--sol2)}
+
+    .banner{
+      margin:6px 0 34px;padding:10px 16px;border:1px solid var(--line);border-radius:10px;
+      font-size:13px;color:var(--dim);background:var(--bg2);
+    }
+    .banner b{color:var(--muted)}
+
+    h1{font-size:clamp(30px,6vw,44px);letter-spacing:-.02em;line-height:1.12;margin:10px 0 12px}
+    .accent{background:linear-gradient(90deg,var(--sol1),var(--sol2));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lede{color:var(--muted);max-width:52ch;margin-bottom:36px}
+
+    /* stepper */
+    .steps{display:flex;gap:8px;margin-bottom:26px;font-family:var(--mono);font-size:12px}
+    .step{
+      flex:1;text-align:center;padding:9px 4px;border-radius:9px;border:1px solid var(--line);
+      color:var(--dim);background:var(--bg2);transition:.3s;
+    }
+    .step.active{border-color:var(--sol1);color:var(--text);background:#181227}
+    .step.done{border-color:var(--sol2);color:var(--sol2)}
+
+    .panel{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:26px;margin-bottom:22px}
+    .panel h2{font-size:20px;margin-bottom:6px;letter-spacing:-.01em}
+    .panel .sub{font-size:14px;color:var(--muted);margin-bottom:18px}
+
+    #wave{width:100%;height:96px;display:block;background:#0d1016;border:1px solid var(--line);border-radius:10px}
+    .controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:16px}
+    .btn{
+      font-family:var(--mono);font-size:14px;padding:11px 22px;border-radius:10px;border:1px solid var(--line);
+      cursor:pointer;background:var(--card);color:var(--text);transition:.15s;text-decoration:none;display:inline-block;
+    }
+    .btn:hover{border-color:var(--sol1)}
+    .btn.primary{background:linear-gradient(90deg,var(--sol1),#6b2fd6);border-color:transparent;color:#fff}
+    .btn.primary:hover{filter:brightness(1.12)}
+    .btn.rec.recording{background:#e5484d;border-color:transparent;color:#fff;animation:pulse 1.2s infinite}
+    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(229,72,77,.5)}50%{box-shadow:0 0 0 9px rgba(229,72,77,0)}}
+    .btn[disabled]{opacity:.4;cursor:not-allowed}
+    .status{font-family:var(--mono);font-size:13px;color:var(--muted)}
+
+    input[type=text]{
+      width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);
+      background:#0d1016;color:var(--text);font:inherit;margin-bottom:14px;
+    }
+    input[type=text]:focus{outline:none;border-color:var(--sol1)}
+    audio{width:100%;height:38px;margin:12px 0}
+
+    /* mint progress */
+    .mint-steps{list-style:none;margin:16px 0}
+    .mint-steps li{
+      display:flex;align-items:center;gap:12px;padding:9px 0;font-family:var(--mono);font-size:13.5px;color:var(--dim);
+    }
+    .mint-steps li .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);flex:none;transition:.3s}
+    .mint-steps li.doing{color:var(--text)}
+    .mint-steps li.doing .dot{border-color:var(--sol1);animation:spin 1s linear infinite;border-top-color:transparent}
+    .mint-steps li.ok{color:var(--sol2)}
+    .mint-steps li.ok .dot{border-color:var(--sol2);background:var(--sol2)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* story cards */
+    .story{
+      background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:14px;
+      display:flex;flex-direction:column;gap:10px;
+    }
+    .story.mine{border-color:#3d2d63;background:linear-gradient(180deg,#181227,var(--card))}
+    .story-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+    .story-head b{font-size:16.5px}
+    .owner{font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+    .owner.you{border-color:var(--sol2);color:var(--sol2)}
+    .bars{display:flex;align-items:center;gap:2px;height:34px}
+    .bars i{flex:1;background:linear-gradient(180deg,var(--sol1),var(--sol2));border-radius:2px;opacity:.8;min-width:2px}
+    .story-meta{display:flex;flex-wrap:wrap;gap:14px;font-family:var(--mono);font-size:12px;color:var(--dim)}
+    .story-meta span b{color:var(--muted);font-weight:600}
+    .story-meta .price{color:var(--gold)}
+    .play{
+      width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;flex:none;
+      background:linear-gradient(90deg,var(--sol1),#6b2fd6);color:#fff;font-size:15px;
+    }
+    .play[disabled]{opacity:.35;cursor:default}
+    .row{display:flex;align-items:center;gap:14px}
+    .hidden{display:none}
+
+    .receipt{
+      font-family:var(--mono);font-size:12.5px;background:#0d1016;border:1px solid var(--line);
+      border-radius:10px;padding:14px 16px;margin-top:14px;color:var(--muted);
+      overflow-wrap:anywhere;line-height:2;
+    }
+    .receipt em{color:var(--dim);font-style:normal}
+    .receipt .g{color:var(--sol2)}
+
+    .pitch{margin-top:40px;padding-top:28px;border-top:1px solid var(--line);color:var(--muted);font-size:15px}
+    .pitch b{color:var(--text)}
+    @media(prefers-reduced-motion:reduce){.btn.rec.recording{animation:none}.mint-steps li.doing .dot{animation:none}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a href="https://deviverr.github.io/portfolio/">← deviverr portfolio</a>
+    <a href="https://t.me/deviverrr" target="_blank" rel="noreferrer">telegram</a>
+  </div>
+
+  <div class="banner">
+    <b>Unofficial concept.</b> Built by deviverr for the Echoes Fans front-end application.
+    Minting and storage are simulated in the browser — no wallet needed, nothing leaves your device.
+  </div>
+
+  <p class="label">echoes product loop · working concept</p>
+  <h1>Record a story. <span class="accent">Own it.</span> Listen back.</h1>
+  <p class="lede">The three moments that make Echoes work, as a front-end you can touch.
+    This is how I'd make audio ownership feel obvious instead of technical.</p>
+
+  <div class="steps">
+    <div class="step active" id="s1">1 · record</div>
+    <div class="step" id="s2">2 · mint</div>
+    <div class="step" id="s3">3 · listen & own</div>
+  </div>
+
+  <!-- STEP 1: RECORD -->
+  <div class="panel" id="p1">
+    <h2>Tell a story</h2>
+    <p class="sub">Your mic, a live waveform, one button. No account, no wallet — the ask comes later, when there's something worth owning.</p>
+    <canvas id="wave" width="800" height="96" aria-label="Live waveform"></canvas>
+    <div class="controls">
+      <button class="btn primary rec" id="recBtn" type="button">● Record</button>
+      <span class="status" id="recStatus">30 seconds is plenty.</span>
+    </div>
+    <div id="preview" class="hidden">
+      <audio id="player" controls></audio>
+      <div class="controls">
+        <button class="btn primary" id="toMint" type="button">Sounds good — make it mine →</button>
+        <button class="btn" id="redo" type="button">↺ Re-record</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: MINT -->
+  <div class="panel hidden" id="p2">
+    <h2>Tokenize it</h2>
+    <p class="sub">Name it, mint it. On the real thing this is Privy auth + Arweave upload + a Solana mint — here every step is simulated so you can feel the flow.</p>
+    <input type="text" id="title" maxlength="60" placeholder="Name your story — e.g. 'How my grandmother crossed the border'" />
+    <button class="btn primary" id="mintBtn" type="button">◎ Mint story (simulated)</button>
+    <ul class="mint-steps hidden" id="mintSteps">
+      <li id="m1"><span class="dot"></span> Encoding audio & metadata</li>
+      <li id="m2"><span class="dot"></span> Uploading to Arweave — permanent storage <em>(simulated)</em></li>
+      <li id="m3"><span class="dot"></span> Minting on Solana <em>(simulated)</em></li>
+      <li id="m4"><span class="dot"></span> Royalties set — you earn on every future trade</li>
+    </ul>
+    <div class="receipt hidden" id="receipt"></div>
+  </div>
+
+  <!-- STEP 3: FEED -->
+  <div class="panel hidden" id="p3">
+    <h2>The feed</h2>
+    <p class="sub">Where stories live, get heard, and trade. Yours is at the top — it plays for real.</p>
+    <div id="feed"></div>
+  </div>
+
+  <div class="pitch">
+    <p><b>Why I built this:</b> a listing can say "recording, publishing, and listening experience" —
+      I'd rather show it. This page is dependency-free vanilla JS: MediaRecorder, Web Audio, Canvas,
+      graceful permission states, mobile-first. In production I'd back it with my own
+      <a href="https://github.com/deviverr/solana-resilience-sdk" target="_blank" rel="noreferrer">solana-resilience-sdk</a>
+      so mints survive flaky RPCs, and wire Privy for the auth moment above.
+      — <a href="https://deviverr.github.io/portfolio/">deviverr</a></p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var canvas=$('wave'),ctx=canvas.getContext('2d');
+  var audioCtx=null,analyser=null,recorder=null,stream=null,raf=null,chunks=[],t0=0,timerId=null;
+  var blobUrl=null,duration=0,peaks=[];
+
+  function fit(){var r=canvas.getBoundingClientRect();canvas.width=r.width*devicePixelRatio;canvas.height=96*devicePixelRatio;}
+  fit();addEventListener('resize',fit);
+
+  function idle(){
+    var w=canvas.width,h=canvas.height,t=Date.now()/900;
+    ctx.clearRect(0,0,w,h);ctx.beginPath();
+    for(var x=0;x<w;x++){var y=h/2+Math.sin(x/90+t)*h*.07*Math.sin(t/2+x/300);x?ctx.lineTo(x,y):ctx.moveTo(x,y);}
+    ctx.strokeStyle='rgba(139,148,167,.35)';ctx.lineWidth=2;ctx.stroke();
+    if(!recorder)raf=requestAnimationFrame(idle);
+  }
+  idle();
+
+  function live(){
+    var data=new Uint8Array(analyser.fftSize);
+    analyser.getByteTimeDomainData(data);
+    var peak=0;
+    var w=canvas.width,h=canvas.height;
+    ctx.clearRect(0,0,w,h);
+    var grad=ctx.createLinearGradient(0,0,w,0);
+    grad.addColorStop(0,'#9945FF');grad.addColorStop(1,'#14F195');
+    ctx.beginPath();
+    for(var i=0;i<data.length;i++){
+      var v=Math.abs(data[i]-128);if(v>peak)peak=v;
+      var x=i/data.length*w,y=data[i]/255*h;
+      i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+    }
+    ctx.strokeStyle=grad;ctx.lineWidth=2.5;ctx.stroke();
+    peaks.push(peak);
+    raf=requestAnimationFrame(live);
+  }
+
+  function stopAll(){
+    if(raf)cancelAnimationFrame(raf);
+    if(timerId)clearInterval(timerId);
+    if(stream)stream.getTracks().forEach(function(t){t.stop()});
+    if(audioCtx){audioCtx.close();audioCtx=null;}
+    recorder=null;stream=null;
+    $('recBtn').classList.remove('recording');
+    $('recBtn').textContent='● Record again';
+    idle();
+  }
+
+  $('recBtn').addEventListener('click',function(){
+    if(recorder&&recorder.state==='recording'){recorder.stop();return;}
+    if(!navigator.mediaDevices||!window.MediaRecorder){
+      $('recStatus').textContent='This browser cannot record — try Chrome, Edge, or Safari 14+.';return;
+    }
+    $('recStatus').textContent='Requesting microphone…';
+    navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
+      stream=s;chunks=[];peaks=[];
+      audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+      analyser=audioCtx.createAnalyser();analyser.fftSize=2048;
+      audioCtx.createMediaStreamSource(s).connect(analyser);
+      recorder=new MediaRecorder(s);
+      recorder.ondataavailable=function(e){if(e.data.size)chunks.push(e.data)};
+      recorder.onstop=function(){
+        duration=(Date.now()-t0)/1000;
+        var blob=new Blob(chunks,{type:recorder.mimeType||'audio/webm'});
+        if(blobUrl)URL.revokeObjectURL(blobUrl);
+        blobUrl=URL.createObjectURL(blob);
+        $('player').src=blobUrl;
+        $('preview').classList.remove('hidden');
+        $('recStatus').textContent=duration.toFixed(1)+'s recorded — stays on your device.';
+        stopAll();
+      };
+      recorder.start();t0=Date.now();
+      timerId=setInterval(function(){$('recStatus').textContent='Recording '+((Date.now()-t0)/1000).toFixed(1)+'s — click to stop.'},100);
+      $('recBtn').textContent='■ Stop';$('recBtn').classList.add('recording');
+      $('preview').classList.add('hidden');
+      cancelAnimationFrame(raf);live();
+    }).catch(function(err){
+      $('recStatus').textContent=err&&err.name==='NotAllowedError'
+        ?'Mic denied — no problem, this is exactly the empty state a real product needs to handle well.'
+        :'No microphone available on this device.';
+    });
+  });
+
+  $('redo').addEventListener('click',function(){$('recBtn').click()});
+
+  // step 2
+  $('toMint').addEventListener('click',function(){
+    $('p2').classList.remove('hidden');
+    $('s1').classList.add('done');$('s1').classList.remove('active');
+    $('s2').classList.add('active');
+    $('p2').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+
+  function b58(n){
+    var a='123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz',s='';
+    for(var i=0;i<n;i++)s+=a[Math.floor(Math.random()*a.length)];
+    return s;
+  }
+
+  $('mintBtn').addEventListener('click',function(){
+    var title=$('title').value.trim()||'Untitled story';
+    $('mintBtn').disabled=true;
+    $('mintSteps').classList.remove('hidden');
+    var ids=['m1','m2','m3','m4'],delays=[700,1400,1300,600],i=0;
+    (function next(){
+      if(i>0){$(ids[i-1]).classList.remove('doing');$(ids[i-1]).classList.add('ok');}
+      if(i>=ids.length){finishMint(title);return;}
+      $(ids[i]).classList.add('doing');
+      setTimeout(next,delays[i++]);
+    })();
+  });
+
+  function finishMint(title){
+    var sig=b58(87),ar=b58(43);
+    $('receipt').innerHTML=
+      '<em>story</em> <span class="g">'+title.replace(/</g,'&lt;')+'</span><br>'+
+      '<em>arweave</em> ar://'+ar+' <em>(simulated)</em><br>'+
+      '<em>solana tx</em> '+sig.slice(0,20)+'… <em>(simulated)</em><br>'+
+      '<em>royalty</em> <span class="g">5% on every trade, forever</span>';
+    $('receipt').classList.remove('hidden');
+    setTimeout(function(){
+      $('s2').classList.add('done');$('s2').classList.remove('active');
+      $('s3').classList.add('active');
+      $('p3').classList.remove('hidden');
+      buildFeed(title);
+      $('p3').scrollIntoView({behavior:'smooth',block:'start'});
+    },900);
+  }
+
+  function barsHtml(seed,n){
+    var h='';
+    for(var i=0;i<n;i++){
+      var v=seed?Math.min(1,(seed[Math.floor(i*seed.length/n)]||6)/50+.12):(.15+.85*Math.abs(Math.sin(i*1.7+n)));
+      h+='<i style="height:'+Math.round(8+v*26)+'px"></i>';
+    }
+    return h;
+  }
+
+  function card(o){
+    var el=document.createElement('div');
+    el.className='story'+(o.mine?' mine':'');
+    el.innerHTML=
+      '<div class="story-head"><b>'+o.title.replace(/</g,'&lt;')+'</b>'+
+      '<span class="owner'+(o.mine?' you':'')+'">'+(o.mine?'◎ owned by you':'owned by '+o.owner)+'</span></div>'+
+      '<div class="row"><button class="play" '+(o.src?'':'disabled title="Sample card — record your own above!"')+'>▶</button>'+
+      '<div class="bars" style="flex:1">'+barsHtml(o.peaks,56)+'</div></div>'+
+      '<div class="story-meta"><span><b>'+o.dur+'</b> long</span><span class="price">◎ '+o.price+' last trade</span>'+
+      '<span><b>'+o.plays+'</b> listens</span><span>'+(o.src?'yours — plays for real':'sample')+'</span></div>';
+    if(o.src){
+      var playing=false,audio=new Audio(o.src),btn=el.querySelector('.play');
+      btn.addEventListener('click',function(){
+        if(playing){audio.pause();audio.currentTime=0;btn.textContent='▶';playing=false;}
+        else{audio.play();btn.textContent='■';playing=true;}
+      });
+      audio.onended=function(){btn.textContent='▶';playing=false;};
+    }
+    return el;
+  }
+
+  function buildFeed(title){
+    var feed=$('feed');feed.innerHTML='';
+    feed.appendChild(card({title:title,mine:true,src:blobUrl,peaks:peaks,dur:duration.toFixed(0)+'s',price:'—',plays:1}));
+    feed.appendChild(card({title:'The night the lights went out in Lagos',owner:'ade…9fKq',dur:'74s',price:'2.4',plays:812}));
+    feed.appendChild(card({title:'My first day driving a Kyiv tram',owner:'olen…Xw2p',dur:'58s',price:'1.1',plays:377}));
+    feed.appendChild(card({title:'Recipe my mother never wrote down',owner:'mar…4Lts',dur:'96s',price:'3.8',plays:1204}));
+  }
+})();
+</script>
+</body>
+</html>
